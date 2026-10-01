@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Poppa's Pizza</title>
     <link rel="icon" href="./imgs/web-icon.png" />
-    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="stylesheet" href="./styles/style.css" />
   </head>
   <body>
     <div id="main">
@@ -47,8 +47,38 @@
           </label>
         </fieldset>
 
+        <fieldset>
+          <legend for="topping">Select Toppings</legend>
+          <label for="pepperoni">
+            <input type="checkbox" name="topping[]" value="pepperoni" />
+            Pepperoni
+          </label>
+          <label for="mushrooms">
+            <input type="checkbox" name="topping[]" value="mushrooms" />
+            Mushrooms
+          </label>
+          <label for="olives">
+            <input type="checkbox" name="topping[]" value="olives" />
+            Olives
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Pizza Size</legend>
+          <select name="pizza-size" id="pizza-size">
+            <option value="none">Select A Size</option>
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+          </select>
+        </fieldset>
+
+        <label for="comment">Comment</label>
+        <textarea rows = "5" name="comment" id="comment"></textarea>
+
         <button type="submit" id="order-button">Submit</button>
       </form>
+
     </div>
   </body>
 </html>
