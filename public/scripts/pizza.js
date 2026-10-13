@@ -1,0 +1,27 @@
+document.getElementById("pizza-form").onsubmit = () => {
+  let fname = document.getElementById("fname").value.trim();
+  let lname = document.getElementById("lname").value.trim();
+
+  let isValid = true;
+
+  clearErrors();
+
+  if (fname === "") {
+    document.getElementById("err-fname").style.display = "block";
+    isValid = false;
+  }
+
+  if (lname === "") {
+    document.getElementById("err-lname").style.display = "block";
+    isValid = false;
+  }
+
+  return isValid;
+};
+
+function clearErrors() {
+  let errors = document.getElementsByClassName("err");
+  for (let i = 0; i < errors.length; i++) {
+    errors[i].style.display = "none";
+  }
+}
