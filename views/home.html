@@ -34,11 +34,12 @@
           <span class="err" id="err-lname">Last name is required</span>
 
           <label for="email">Email</label>
-          <input type="email" id="email" name="lname" />
+          <input type="email" id="email" name="ename" />
         </fieldset>
 
         <fieldset>
           <legend>Select Pickup or Delivery</legend>
+          <span class = "err" id = "err-method">Select a pickup or delivery option</span>
           <label for="pickup">
             <input type="radio" id="pickup" name="method" value="pickup" />
             Pickup
@@ -68,6 +69,7 @@
 
         <fieldset>
           <legend>Pizza Size</legend>
+          <span class = "err" id = "err-size">Select a pizza size</span>
           <select name="pizza-size" id="pizza-size">
             <option value="none">Select A Size</option>
             <option value="small">Small</option>
