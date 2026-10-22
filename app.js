@@ -49,3 +49,8 @@ app.get("/menu", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
+
+// Add an admin root
+app.get("/admin", (req, res) => {
+  res.send(orders);
+});
