@@ -7,6 +7,10 @@ import mysql2 from "mysql2";
 import dotenv from "dotenv";
 dotenv.config();
 
+// Import express-session
+import session from 'express-session'
+
+
 
 // Create a connection pool
 const pool = mysql2.createPool({
@@ -17,10 +21,24 @@ const pool = mysql2.createPool({
   port: process.env.DB_PORT
 }).promise();
 
-
-
 // Make express object
 const app = express();
+
+app.use(session({
+  secret:process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {maxAge: 1000 * 60 * 60}
+}))
+
+
+function requireLogin(req, res, next) {
+  if (req.session.loggedIn) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+}
 
 // Define port
 const PORT = 3000;
@@ -63,6 +81,10 @@ app.post("/submit-order", async (req, res) => {
   const order = req.body;
   order.timestamp = new Date();
   console.log(order);
+
+  // Conver toppings array to comma-delimited string
+  order.topping = Array.isArray(order.topping) ? order.topping.join(", ") : "";
+
   //define an sql query to insert new order
   const sql = `INSERT INTO orders (fname, lname, email, size, method, toppings, comment) VALUES(?, ?, ?, ?, ?, ?, ?)`;
   
@@ -96,6 +118,29 @@ app.post("/submit-order", async (req, res) => {
 //   res.render("confirm");
 // });
 
+app.get("/login", (req, res) => {
+  res.render("login", {error: null});
+})
+
+app.post("/login", (req, res) => {
+    const userName = req.body.username;
+    const password = req.body.password;
+
+    if (userName === process.env.ADMIN_USER && password === process.env.ADMIN_PASSWORD) {
+      req.session.loggedIn = true;
+
+      res.redirect("/admin");
+    } else {
+      res.render('login', {error: "Invalid username or password"});
+    }
+})
+
+app.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/login");
+  })
+})
+
 // For menu page
 app.get("/menu", (req, res) => {
   res.sendFile(`${import.meta.dirname}/views/menu.html`);
@@ -107,14 +152,14 @@ app.listen(PORT, () => {
 
 
 // Add an admin root
-app.get("/admin", async (req, res) => {
+app.get("/admin", requireLogin, async (req, res) => {
   try {
     const [orders] = await pool.query("SELECT * FROM orders ORDER BY timestamp DESC");
     console.log(orders);
     res.render("admin", {orders:orders});
-  
   } catch {
     console.error("Database error: ", err);
     res.status(500).send("Database error occured");
   }
+
 });

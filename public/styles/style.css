@@ -64,6 +64,7 @@ body {
 
 input[type="text"],
 input[type="email"],
+input[type="password"],
 select,
 textarea {
   width: 100%;
@@ -99,4 +100,9 @@ textarea {
 .err {
   color: red;
   display: none;
+}
+
+.login-error {
+  color: darkred;
+  font-weight: bold;
 }
